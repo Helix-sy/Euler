@@ -1,0 +1,9 @@
+image: golang:1.24.1
+
+test:
+  coverage: '/\(statements\)\s+\d+.\d+%/'
+  script:
+    - go test ./... -coverprofile cover.out
+    - go tool cover -func cover.out
+
+
