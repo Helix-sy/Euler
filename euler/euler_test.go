@@ -14,7 +14,7 @@ func TestSmallCase(t *testing.T) {
 	vs[5].CreateEdges([]*hmgraph.Vertex{vs[3], vs[1]})
 	vs[6].CreateEdges([]*hmgraph.Vertex{vs[4], vs[2]})
 
-	start, edges, err := EulerPath(g)
+	start, edges, err := UndirectedEulerPath(g)
 	assert.Nil(t, err)
 	assertEulerPath(t, g, start, edges)
 	x, y, z := g.MapCount()
@@ -31,7 +31,7 @@ func TestUnconnectedCase(t *testing.T) {
 	vs[7].CreateEdges([]*hmgraph.Vertex{vs[8], vs[9]})
 	vs[8].CreateEdge(vs[9])
 
-	_, _, err := EulerPath(g)
+	_, _, err := UndirectedEulerPath(g)
 	assert.NotNil(t, err, "no error on unconnected edges")
 	x, y, z := g.MapCount()
 	assert.True(t, x+y+z == 0, "Not all maps disposed.")
@@ -44,7 +44,7 @@ func TestNotEulerianCase(t *testing.T) {
 	vs[3].CreateEdges([]*hmgraph.Vertex{vs[0], vs[4]})
 	vs[1].CreateEdges([]*hmgraph.Vertex{vs[5], vs[3]})
 
-	_, _, err := EulerPath(g)
+	_, _, err := UndirectedEulerPath(g)
 	assert.NotNil(t, err, "no error despite non-Eulerian graph")
 	x, y, z := g.MapCount()
 	assert.True(t, x+y+z == 0, "Not all maps disposed.")
@@ -60,7 +60,7 @@ func TestComplexCase(t *testing.T) {
 	vs[4].CreateEdges([]*hmgraph.Vertex{vs[7], vs[5]})
 	vs[4].CreateEdges([]*hmgraph.Vertex{vs[7], vs[6]})
 
-	start, edges, err := EulerPath(g)
+	start, edges, err := UndirectedEulerPath(g)
 	assert.Nil(t, err)
 	assertEulerPath(t, g, start, edges)
 	x, y, z := g.MapCount()
