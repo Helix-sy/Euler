@@ -5,8 +5,8 @@ import (
 )
 
 // UndirectedEulerPath computes an UndirectedEulerPath for an undirected graph
-// if the graph is at least semi-Eulerian. Throws an error
-// if the graph contains Arcs or is not semi-Eulerian.
+// if the graph is at least semi-Eulerian. Returns an error
+// if the graph contains any Arcs or is not semi-Eulerian.
 func UndirectedEulerPath(g *hmgraph.Graph) (start *hmgraph.Vertex, edges []*hmgraph.Edge, err error) {
 	return nil, nil, nil
 }
