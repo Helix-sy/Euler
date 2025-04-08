@@ -27,7 +27,6 @@ func UndirectedEulerPath(g *hmgraph.Graph) (start *hmgraph.Vertex, edges []*hmgr
 	// Compute the Euler path
 	path := make([]*hmgraph.Edge, 0, g.EdgeCount())
 
-	// Use the modified approach from cp-algorithms.com
 	findPath(start, nil, visited, &path)
 
 	// Reverse the path to get the correct order
