@@ -82,4 +82,57 @@ func assertEulerPath(t *testing.T, g *hmgraph.Graph, start *hmgraph.Vertex, edge
 		used.Set(edge, true)
 		current = edge.Opposite(current)
 	}
+
+}
+
+func TestEmptyGraph(t *testing.T) {
+	g := hmgraph.NewGraph()
+
+	_, _, err := UndirectedEulerPath(g)
+	assert.NotNil(t, err, "Expected error for empty graph")
+	x, y, z := g.MapCount()
+	assert.True(t, x+y+z == 0, "Not all maps disposed.")
+}
+
+func TestGraphWithIsolatedVertices(t *testing.T) {
+	g := hmgraph.NewGraph()
+	g.CreateVertices(3) // No edges at all
+
+	_, _, err := UndirectedEulerPath(g)
+	assert.NotNil(t, err, "Expected error for graph with no edges")
+	x, y, z := g.MapCount()
+	assert.True(t, x+y+z == 0, "Not all maps disposed.")
+}
+func TestGraphWithArc(t *testing.T) {
+	g := hmgraph.NewGraph()
+	vs := g.CreateVertices(2)
+
+	arc := vs[0].CreateArc(vs[1])
+	assert.NotNil(t, arc, "Arc creation failed")
+
+	assert.True(t, g.ArcCount() > 0, "Graph should contain at least one arc")
+
+	_, _, err := UndirectedEulerPath(g)
+	assert.NotNil(t, err)
+	assert.Equal(t, "graph contains arcs", err.Error(), "Unexpected error message")
+
+	x, y, z := g.MapCount()
+	assert.True(t, x+y+z == 0, "Not all maps disposed.")
+}
+func TestEulerianCircuit(t *testing.T) {
+	g := hmgraph.NewGraph()
+	vs := g.CreateVertices(3)
+	vs[0].CreateEdge(vs[1])
+	vs[1].CreateEdge(vs[2])
+	vs[2].CreateEdge(vs[0])
+
+	// All vertices have degree 2 (even), so this is an Eulerian circuit
+
+	start, edges, err := UndirectedEulerPath(g)
+	assert.Nil(t, err)
+	assert.NotNil(t, start)
+	assert.Equal(t, g.EdgeCount(), len(edges))
+	assertEulerPath(t, g, start, edges)
+	x, y, z := g.MapCount()
+	assert.True(t, x+y+z == 0, "Not all maps disposed.")
 }
